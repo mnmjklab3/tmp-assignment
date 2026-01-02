@@ -29,29 +29,75 @@
     <a-entity mindar-image-target="targetIndex: 0" scan-cooldown>
       <a-gltf-model
         src="#model"
-        scale="0.08 0.08 0.08"
+        scale="0.01 0.01 0.01"
         position="0 -0.1 0"
-        animation-mixer="loop: once; autoplay: false; clampWhenFinished: true"
+        animation-mixer
       ></a-gltf-model>
     </a-entity>
 
     <script>
     AFRAME.registerComponent("scan-cooldown", {
       init() {
+        console.log("[scan-cooldown] init");
+    
         this.lastTime = 0;
         this.cooldown = 2000;
+        this.mixerReady = false;
+    
+        const model = this.el.querySelector("a-gltf-model");
+    
+        if (!model) {
+          console.error("[scan-cooldown] a-gltf-model NOT FOUND");
+          return;
+        }
+    
+        console.log("[scan-cooldown] a-gltf-model found");
+    
+        model.addEventListener("model-loaded", (e) => {
+          console.log("[scan-cooldown] model-loaded event fired");
+          console.log("[scan-cooldown] animations:", e.detail.model.animations);
+    
+          if (
+            e.detail.model.animations &&
+            e.detail.model.animations.length > 0
+          ) {
+            console.log("[scan-cooldown] animation count:", e.detail.model.animations.length);
+            this.mixerReady = true;
+          } else {
+            console.error("[scan-cooldown] NO ANIMATIONS IN GLB");
+          }
+        });
     
         this.el.addEventListener("targetFound", () => {
+          console.log("[scan-cooldown] targetFound");
+    
+          if (!this.mixerReady) {
+            console.warn("[scan-cooldown] mixer NOT ready yet");
+            return;
+          }
+    
           const now = Date.now();
-          if (now - this.lastTime < this.cooldown) return;
+          if (now - this.lastTime < this.cooldown) {
+            console.warn("[scan-cooldown] cooldown active");
+            return;
+          }
     
           this.lastTime = now;
     
-          const model = this.el.querySelector("[animation-mixer]");
-          if (model) {
-            model.components["animation-mixer"].stopAction();
-            model.components["animation-mixer"].playAction();
+          const mixer = model.components["animation-mixer"];
+    
+          if (!mixer) {
+            console.error("[scan-cooldown] animation-mixer component NOT FOUND");
+            return;
           }
+    
+          console.log("[scan-cooldown] playing animation");
+          mixer.stopAction();
+          mixer.playAction();
+        });
+    
+        this.el.addEventListener("targetLost", () => {
+          console.log("[scan-cooldown] targetLost");
         });
       }
     });
