@@ -16,6 +16,7 @@
 <body>
   <a-scene
     mindar-image="imageTargetSrc: targets2.mind;"
+    renderer="antialias: false; precision: mediump"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
   >
@@ -50,10 +51,10 @@
         if (started) return;
 
         dragonRoot.setAttribute("animation-mixer", {
-          clip: "cyclewalk",
+          clip: "Flying",
           loop: "repeat",
           autoplay: true,
-          timeScale: 1
+          timeScale: 0.5
         });
 
         started = true;
