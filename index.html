@@ -21,7 +21,7 @@
   >
 
     <a-assets>
-      <a-asset-item id="model" src="dragon2.glb"></a-asset-item>
+      <a-asset-item id="model" src="dragon.glb"></a-asset-item>
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
@@ -50,7 +50,7 @@
         if (started) return;
 
         dragonRoot.setAttribute("animation-mixer", {
-          clip: "Flying",
+          clip: "*",
           loop: "repeat",
           autoplay: true,
           timeScale: 0.8
