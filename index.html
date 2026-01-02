@@ -21,7 +21,7 @@
   >
 
     <a-assets>
-      <a-asset-item id="model" src="dragon2.glb"></a-asset-item>
+      <a-asset-item id="model" src="simple.glb"></a-asset-item>
     </a-assets>
 
     <a-camera position="0 -1 0" look-controls="enabled: false"></a-camera>
@@ -39,7 +39,7 @@
     AFRAME.registerComponent("scan-cooldown", {
       init() {
         this.lastTime = 0;
-        this.cooldown = 2000; // 2 sekundy
+        this.cooldown = 2000;
     
         this.el.addEventListener("targetFound", () => {
           const now = Date.now();
