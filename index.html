@@ -43,26 +43,53 @@
     
         this.lastTime = 0;
         this.cooldown = 2000;
+        this.mixerReady = false;
     
         const model = this.el.querySelector("a-gltf-model");
+    
+        if (!model) {
+          console.error("[scan-cooldown] a-gltf-model NOT FOUND");
+          return;
+        }
+    
+        console.log("[scan-cooldown] a-gltf-model found");
+    
+        model.addEventListener("componentinitialized", (e) => {
+          if (e.detail.name === "animation-mixer") {
+            console.log("[scan-cooldown] animation-mixer READY");
+            this.mixerReady = true;
+          }
+        });
     
         this.el.addEventListener("targetFound", () => {
           console.log("[scan-cooldown] targetFound");
     
-          const now = Date.now();
-          if (now - this.lastTime < this.cooldown) return;
-          this.lastTime = now;
-    
-          const mixer = model.components["animation-mixer"];
-    
-          if (!mixer) {
-            console.error("[scan-cooldown] animation-mixer MISSING");
+          if (!this.mixerReady) {
+            console.warn("[scan-cooldown] animation-mixer NOT ready yet");
             return;
           }
     
-          console.log("[scan-cooldown] PLAY animation");
+          const now = Date.now();
+          if (now - this.lastTime < this.cooldown) {
+            console.warn("[scan-cooldown] cooldown active");
+            return;
+          }
+    
+          this.lastTime = now;
+    
+          const mixer = model.components["animation-mixer"];
+          if (!mixer) {
+            console.error("[scan-cooldown] mixer STILL missing (should not happen)");
+            return;
+          }
+    
+          console.log("[scan-cooldown] playing animation");
           mixer.stopAction();
           mixer.playAction("Armature|ArmatureAction");
+        });
+    
+        this.el.addEventListener("targetLost", () => {
+          console.log("[scan-cooldown] targetLost");
         });
       }
     });
