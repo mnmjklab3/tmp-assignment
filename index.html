@@ -33,28 +33,36 @@
       scale="0.2 0.2 0.2"
       position="0 -0.1 0"
       animation-mixer="clip: Armature|ArmatureAction; loop: once; clampWhenFinished: true"
-      log-animations
-
     ></a-gltf-model>
     </a-entity>
     
     <script>
-    AFRAME.registerComponent("log-animations", {
+    AFRAME.registerComponent("scan-cooldown", {
       init() {
-        const model = this.el;
+        console.log("[scan-cooldown] init");
     
-        model.addEventListener("model-loaded", (e) => {
-          const animations = e.detail.model.animations;
+        this.lastTime = 0;
+        this.cooldown = 2000;
     
-          if (!animations || animations.length === 0) {
-            console.warn("[log-animations] GLB nemá žádné animace");
+        const model = this.el.querySelector("a-gltf-model");
+    
+        this.el.addEventListener("targetFound", () => {
+          console.log("[scan-cooldown] targetFound");
+    
+          const now = Date.now();
+          if (now - this.lastTime < this.cooldown) return;
+          this.lastTime = now;
+    
+          const mixer = model.components["animation-mixer"];
+    
+          if (!mixer) {
+            console.error("[scan-cooldown] animation-mixer MISSING");
             return;
           }
     
-          console.log("[log-animations] Nalezené animace:");
-          animations.forEach((anim, i) => {
-            console.log(`  ${i}: "${anim.name}" (duration: ${anim.duration}s)`);
-          });
+          console.log("[scan-cooldown] PLAY animation");
+          mixer.stopAction();
+          mixer.playAction("Flying");
         });
       }
     });
