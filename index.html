@@ -16,6 +16,15 @@ body {
   font-family: "Cinzel", serif;
 }
 
+#dark-bg {
+  position: absolute;
+  inset: 40px;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(2px);
+  border-radius: 20px;
+  z-index: -1;
+}
+  
 #hud {
   position: fixed;
   top: 0;
@@ -26,7 +35,7 @@ body {
 
 #title {
   position: absolute;
-  top: 20px;
+  top: 55px;
   width: 100%;
   text-align: center;
   font-size: 2.8em;
@@ -37,7 +46,7 @@ body {
 
 #subtitle {
   position: absolute;
-  top: 80px;
+  top: 115px;
   width: 100%;
   text-align: center;
   color: #ffbb99;
@@ -86,6 +95,7 @@ body {
 <body>
 
 <div id="hud">
+  <div id="dark-bg"></div>
   <div id="frame"></div>
   <div id="title">🐉 DRAGON HUNT</div>
   <div id="subtitle">Ancient AR Summoning Ritual</div>
