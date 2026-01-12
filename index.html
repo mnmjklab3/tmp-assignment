@@ -16,23 +16,38 @@ body {
   font-family: "Cinzel", serif;
 }
 
-#dark-bg {
+.dark-top, .dark-bottom, .dark-left, .dark-right {
   position: absolute;
-  inset: 0;
   background: rgba(0,0,0,0.65);
   pointer-events: none;
-  -webkit-mask:
-    radial-gradient(
-      circle at center,
-      transparent 55%,
-      black 58%
-    );
-  mask:
-    radial-gradient(
-      circle at center,
-      transparent 55%,
-      black 58%
-    );
+}
+
+.dark-top {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+}
+
+.dark-bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+}
+
+.dark-left {
+  top: 40px;
+  bottom: 40px;
+  left: 0;
+  width: 40px;
+}
+
+.dark-right {
+  top: 40px;
+  bottom: 40px;
+  right: 0;
+  width: 40px;
 }
   
 #hud {
@@ -128,7 +143,10 @@ body {
 <body>
 
 <div id="hud">
-  <div id="dark-bg"></div>
+  <div class="dark-top"></div>
+  <div class="dark-bottom"></div>
+  <div class="dark-left"></div>
+  <div class="dark-right"></div>
   <div id="frame"></div>
   <div class="corner tl"></div>
   <div class="corner tr"></div>
