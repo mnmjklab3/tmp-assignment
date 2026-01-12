@@ -73,11 +73,34 @@ body {
 #frame {
   position: absolute;
   inset: 40px;
-  border: 3px solid rgba(255, 60, 0, 0.4);
-  box-shadow: 0 0 40px rgba(255, 80, 0, 0.4) inset;
-  border-radius: 20px;
+  border-radius: 22px;
+  border: 2px solid rgba(255,80,0,0.6);
+  box-shadow:
+    0 0 40px rgba(255,60,0,0.6),
+    inset 0 0 40px rgba(255,60,0,0.4);
+  animation: framePulse 2s infinite ease-in-out;
+  pointer-events: none;
 }
 
+@keyframes framePulse {
+  0% { box-shadow: 0 0 25px rgba(255,80,0,0.4), inset 0 0 25px rgba(255,60,0,0.3); }
+  50% { box-shadow: 0 0 60px rgba(255,120,0,0.8), inset 0 0 60px rgba(255,80,0,0.5); }
+  100% { box-shadow: 0 0 25px rgba(255,80,0,0.4), inset 0 0 25px rgba(255,60,0,0.3); }
+}
+
+.corner {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255,120,40,0.8);
+  box-shadow: 0 0 20px rgba(255,80,0,0.8);
+}
+
+.tl { top: 30px; left: 30px; border-right: none; border-bottom: none; }
+.tr { top: 30px; right: 30px; border-left: none; border-bottom: none; }
+.bl { bottom: 30px; left: 30px; border-right: none; border-top: none; }
+.br { bottom: 30px; right: 30px; border-left: none; border-top: none; }
+  
 #found {
   position: absolute;
   bottom: 120px;
@@ -97,6 +120,10 @@ body {
 <div id="hud">
   <div id="dark-bg"></div>
   <div id="frame"></div>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
   <div id="title">🐉 DRAGON HUNT</div>
   <div id="subtitle">Ancient AR Summoning Ritual</div>
   <div id="scanner">📜 Scan the Dragon Sigil</div>
